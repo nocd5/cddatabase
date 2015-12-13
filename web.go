@@ -44,7 +44,7 @@ func getDatabase() []Item {
 	dbmap := openDb()
 	defer dbmap.Db.Close()
 	var items []Item
-	_, _ = dbmap.Select(&items, "SELECT * FROM database")
+	_, _ = dbmap.Select(&items, "SELECT * FROM database ORDER BY artist ASC, title ASC")
 	return items
 }
 
@@ -53,7 +53,7 @@ func getGenre() []string {
 	defer dbmap.Db.Close()
 
 	var items []Item
-	_, _ = dbmap.Select(&items, "SELECT DISTINCT genre FROM database")
+	_, _ = dbmap.Select(&items, "SELECT DISTINCT genre FROM database ORDER BY genre ASC")
 	var genre []string
 	for _, item := range items {
 		genre = append(genre, item.Genre)
@@ -66,7 +66,7 @@ func getArtist() []Item {
 	defer dbmap.Db.Close()
 
 	var items []Item
-	_, _ = dbmap.Select(&items, "SELECT DISTINCT artist, genre FROM database")
+	_, _ = dbmap.Select(&items, "SELECT DISTINCT artist, genre FROM database ORDER BY artist ASC")
 	return items
 }
 
