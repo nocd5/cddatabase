@@ -9,12 +9,12 @@
 }
 
 .dropdown-items > div:nth-child(1) {
-    margin: 10px 20px 5px 0;
+    margin: 10px 0 5px 20px;
 }
 
 .dropdown-items
 {
-    text-align: right;
+    text-align: left;
     margin-left: auto;
 }
 
