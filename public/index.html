@@ -13,36 +13,38 @@
     </head>
     <body>
         <title>My CD Database</title>
-        <div class="dropdown-items">
-            <div class="btn-group col-xs-offset-1 col-md-offset-5 col-xs-10 col-md-6">
-                <div class="btn-group col-xs-6">
-                    <button class="btn col-xs-12  btn-primary dropdown-toggle btn-lg" type="button" id="dropdown-menu-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Genre <span class="caret"></span>
-                    </button>
-                    <ul id="genre" class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenu1"></ul>
-                </div>
-                <div class="btn-group col-xs-6">
-                    <button class="btn btn-danger dropdown-toggle btn-lg col-xs-12" type="button" id="dropdown-menu-artist" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Artist <span class="caret"></span>
-                    </button>
-                    <ul id="artist" class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenu1"></ul>
+        <div class="container">
+            <div class="dropdown-items">
+                <div class="btn-group col-xs-12 col-md-7 col-md-offset-5">
+                    <div class="btn-group col-xs-6">
+                        <button class="btn col-xs-12  btn-primary dropdown-toggle btn-lg" type="button" id="dropdown-menu-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Genre <span class="caret"></span>
+                        </button>
+                        <ul id="genre" class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenu1"></ul>
+                    </div>
+                    <div class="btn-group col-xs-6">
+                        <button class="btn btn-danger dropdown-toggle btn-lg col-xs-12" type="button" id="dropdown-menu-artist" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Artist <span class="caret"></span>
+                        </button>
+                        <ul id="artist" class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenu1"></ul>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="panel panel-default col-xs-offset-1 col-xs-10">
-            <div class="database">
-                <div id=cd-count class="panel-heading"><h1>0</h1></div>
-                <div class="panel-body panel-height">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Artist</th>
-                                <th>Title</th>
-                                <th>Genre</th>
-                            </tr>
-                        </thead>
-                        <tbody id="database"></tbody>
-                    </table>
+            <div class="panel panel-default col-xs-12">
+                <div class="database">
+                    <div id=cd-count class="panel-heading"><h1>0</h1></div>
+                    <div class="panel-body panel-height">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Artist</th>
+                                    <th>Title</th>
+                                    <th>Genre</th>
+                                </tr>
+                            </thead>
+                            <tbody id="database"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
