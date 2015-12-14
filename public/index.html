@@ -8,13 +8,12 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="./asset/stylesheet/layout.css">
-        <link href='https://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Amaranth' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="//fonts.googleapis.com/earlyaccess/notosansjapanese.css">
     </head>
     <body>
         <title>My CD Database</title>
-        <div id="content" class="top"></div>
-            <div class="dropdown-items">
+        <div class="dropdown-items">
             <div class="btn-group" role="group">
                 <div class="btn-group" role="group">
                     <button class="btn btn-primary dropdown-toggle btn-lg" type="button" id="dropdown-menu-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -29,26 +28,23 @@
                     <ul id="artist" class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenu1"></ul>
                 </div>
             </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="database">
-                    <div id=cd-count class="panel-heading"><h1>0 / 0</h1></div>
-                    <div class="panel-body panel-height">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Artist</th>
-                                    <th>Title</th>
-                                    <th>Genre</th>
-                                </tr>
-                            </thead>
-                            <tbody id="database">
-                            </tbody>
-                        </table>
-                    </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="database">
+                <div id=cd-count class="panel-heading"><h1>0</h1></div>
+                <div class="panel-body panel-height">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Artist</th>
+                                <th>Title</th>
+                                <th>Genre</th>
+                            </tr>
+                        </thead>
+                        <tbody id="database"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </body>
 </html>
-

@@ -8,6 +8,7 @@ import (
 	"github.com/zenazn/goji"
 	"github.com/zenazn/goji/web"
 	"net/http"
+	"strings"
 )
 
 type Item struct {
@@ -26,8 +27,10 @@ func main() {
 }
 
 func databaseJsonHandler(ctx web.C, res http.ResponseWriter, req *http.Request) {
+	genre := req.URL.Query().Get("genre")
+	artist := req.URL.Query().Get("artist")
 	encoder := json.NewEncoder(res)
-	encoder.Encode(getDatabase())
+	encoder.Encode(getDatabase(genre, artist))
 }
 
 func genreJsonHandler(ctx web.C, res http.ResponseWriter, req *http.Request) {
@@ -36,15 +39,29 @@ func genreJsonHandler(ctx web.C, res http.ResponseWriter, req *http.Request) {
 }
 
 func artistJsonHandler(ctx web.C, res http.ResponseWriter, req *http.Request) {
+	genre := req.URL.Query().Get("genre")
 	encoder := json.NewEncoder(res)
-	encoder.Encode(getArtist())
+	encoder.Encode(getArtist(genre))
 }
 
-func getDatabase() []Item {
+func escapeKeyword(keyword string) string {
+	return strings.Replace(keyword, "'", "''", -1)
+}
+
+func getDatabase(genre string, artist string) []Item {
+	_genre := escapeKeyword(genre)
+	if _genre == "" {
+		_genre = "%"
+	}
+	_artist := escapeKeyword(artist)
+	if _artist == "" {
+		_artist = "%"
+	}
+
 	dbmap := openDb()
 	defer dbmap.Db.Close()
 	var items []Item
-	_, _ = dbmap.Select(&items, "SELECT * FROM database ORDER BY artist ASC, title ASC")
+	_, _ = dbmap.Select(&items, "SELECT * FROM database WHERE genre LIKE '"+_genre+"' AND artist LIKE '"+_artist+"' ORDER BY artist ASC, title ASC")
 	return items
 }
 
@@ -61,13 +78,22 @@ func getGenre() []string {
 	return genre
 }
 
-func getArtist() []Item {
+func getArtist(genre string) []string {
+	_genre := escapeKeyword(genre)
+	if _genre == "" {
+		_genre = "%"
+	}
+
 	dbmap := openDb()
 	defer dbmap.Db.Close()
 
 	var items []Item
-	_, _ = dbmap.Select(&items, "SELECT DISTINCT artist, genre FROM database ORDER BY artist ASC")
-	return items
+	_, _ = dbmap.Select(&items, "SELECT DISTINCT artist FROM database WHERE genre LIKE '"+_genre+"' ORDER BY artist ASC")
+	var artist []string
+	for _, item := range items {
+		artist = append(artist, item.Artist)
+	}
+	return artist
 }
 
 func openDb() *gorp.DbMap {

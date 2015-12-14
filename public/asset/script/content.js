@@ -1,57 +1,72 @@
-var database = []
-var genre = []
-var artist = []
 var currentGenre = ''
 var currentArtist = ''
 
 var xmlHttpRequestGenre = new XMLHttpRequest();
-xmlHttpRequestGenre.onreadystatechange = function()
-{
+xmlHttpRequestGenre.onreadystatechange = function () {
     if( this.readyState == 4 && this.status == 200 )
     {
         if( this.response )
         {
-            genre = JSON.parse(xmlHttpRequestGenre.responseText);
-            generateGenreList();
+            generateGenreList(JSON.parse(xmlHttpRequestGenre.responseText));
         }
     }
+}
+function postGenreJsonRequest(parameter = '') {
+    xmlHttpRequestGenre.open( 'GET', 'genre.json' + parameter, true );
+    xmlHttpRequestGenre.send( null );
 }
 
 var xmlHttpRequestArtist = new XMLHttpRequest();
-xmlHttpRequestArtist.onreadystatechange = function()
-{
+xmlHttpRequestArtist.onreadystatechange = function () {
     if( this.readyState == 4 && this.status == 200 )
     {
         if( this.response )
         {
-            artist = JSON.parse(xmlHttpRequestArtist.responseText);
-            generateArtistList();
+            generateArtistList(JSON.parse(xmlHttpRequestArtist.responseText));
         }
     }
+}
+function postArtistJsonRequest(parameter = '') {
+    xmlHttpRequestArtist.open( 'GET', 'artist.json' + parameter, true );
+    xmlHttpRequestArtist.send( null );
 }
 
 var xmlHttpRequestDatabase = new XMLHttpRequest();
-xmlHttpRequestDatabase.onreadystatechange = function()
-{
+xmlHttpRequestDatabase.onreadystatechange = function () {
     if( this.readyState == 4 && this.status == 200 )
     {
         if( this.response )
         {
-            database = JSON.parse(xmlHttpRequestDatabase.responseText);
-            generateTable()
+            generateTable(JSON.parse(xmlHttpRequestDatabase.responseText))
         }
     }
 }
-
-$(window).load(function(){
-    xmlHttpRequestGenre.open( 'GET', 'genre.json', true );
-    xmlHttpRequestGenre.send( null );
-    xmlHttpRequestArtist.open( 'GET', 'artist.json', true );
-    xmlHttpRequestArtist.send( null );
-    xmlHttpRequestDatabase.open( 'GET', 'database.json', true );
+function postDatabaseJsonRequest(parameter = '') {
+    xmlHttpRequestDatabase.open( 'GET', 'database.json' + parameter, true );
     xmlHttpRequestDatabase.send( null );
+}
 
-    $('#genre').on('click', 'li', function(event){
+function getQueryParameter() {
+    var param = [];
+    if (currentGenre != '') {
+        param.push('genre=' + encodeURIComponent(currentGenre));
+    }
+    if (currentArtist != '') {
+        param.push('artist=' + encodeURIComponent(currentArtist));
+    }
+    var result = '';
+    if (param.length > 0) {
+        result = '?' + param.join('&');
+    }
+    return result;
+}
+
+$(window).load(function () {
+    postGenreJsonRequest();
+    postArtistJsonRequest();
+    postDatabaseJsonRequest();
+
+    $('#genre').on('click', 'li', function () {
         if ($(this).index() == 0) {
             currentGenre = '';
             $('#dropdown-menu-genre').text('Genre');
@@ -68,10 +83,14 @@ $(window).load(function(){
         $('#dropdown-menu-artist').append(' ');
         $('#dropdown-menu-artist').append($('<span>', {class: 'caret'}));
 
-        generateTable();
-        generateArtistList();
+        var parameter = '';
+        if (currentGenre != '') {
+            parameter += '?genre=' + encodeURIComponent(currentGenre);
+        }
+        postArtistJsonRequest(parameter);
+        postDatabaseJsonRequest(getQueryParameter());
     })
-    $('#artist').on('click', 'li', function(event){
+    $('#artist').on('click', 'li', function () {
         if ($(this).index() == 0) {
             currentArtist = '';
             $('#dropdown-menu-artist').text('Artist');
@@ -82,7 +101,7 @@ $(window).load(function(){
         }
         $('#dropdown-menu-artist').append(' ');
         $('#dropdown-menu-artist').append($('<span>', {class: 'caret'}));
-        generateTable()
+        postDatabaseJsonRequest(getQueryParameter());
     })
 
     setPanelHeight();
@@ -97,13 +116,13 @@ function setPanelHeight() {
     var headerPaddingBottom = parseInt($('.panel-heading').css('padding-top'), 0);
     var buttonMarginTop = parseInt($('.btn-group').css('margin-top'), 0);
     var buttonMarginBottom = parseInt($('.btn-group').css('margin-top'), 0);
-    height = $(window).height() - $('.panel-heading').height() - $('.btn-group').height()
+    var height = $(window).height() - $('.panel-heading').height() - $('.btn-group').height()
         - (headerPaddingTop + headerPaddingBottom)
         - (buttonMarginTop + buttonMarginBottom);
     $('.panel-height').css('height', height + 'px');
 }
 
-function generateGenreList() {
+function generateGenreList(genre) {
     $('#genre li').remove()
 
     $('#genre').append(
@@ -122,7 +141,7 @@ function generateGenreList() {
     }
 }
 
-function generateArtistList() {
+function generateArtistList(artist) {
     $('#artist li').remove();
 
     $('#artist').append(
@@ -133,69 +152,26 @@ function generateArtistList() {
     $('#artist').append( $('<li>', {role: 'separator', class: 'divider'}) );
 
     for (var i = 0; i < artist.length; i++) {
-        if ((currentGenre == '') | (currentGenre == artist[i].Genre)) {
-            $('#artist').append(
-                $('<li>').append(
-                    $('<a>').text(artist[i].Artist)
-                )
-            );
-        }
+        $('#artist').append(
+            $('<li>').append(
+                $('<a>').text(artist[i])
+            )
+        );
     }
 }
 
-function generateTable() {
+function generateTable(database) {
     $('#database tr').remove();
-    var count = 0;
     for (var i = 0; i < database.length; i++) {
-        if ((currentGenre == '') && (currentArtist == '')) {
-            $('#database').append(
-                $('<tr>').append(
-                    $('<th>').text(database[i].Artist),
-                    $('<th>').text(database[i].Title),
-                    $('<th>').text(database[i].Genre)
-                )
-            );
-            count++;
-        }
-        else if (currentGenre == '') {
-            if (database[i].Artist == currentArtist) {
-                $('#database').append(
-                    $('<tr>').append(
-                        $('<th>').text(database[i].Artist),
-                        $('<th>').text(database[i].Title),
-                        $('<th>').text(database[i].Genre)
-                    )
-                );
-                count++;
-            }
-        }
-        else if (currentArtist == '') {
-            if (database[i].Genre == currentGenre) {
-                $('#database').append(
-                    $('<tr>').append(
-                        $('<th>').text(database[i].Artist),
-                        $('<th>').text(database[i].Title),
-                        $('<th>').text(database[i].Genre)
-                    )
-                );
-                count++;
-            }
-        }
-        else {
-            if ((database[i].Artist == currentArtist)
-                && (database[i].Genre == currentGenre)) {
-                $('#database').append(
-                    $('<tr>').append(
-                        $('<th>').text(database[i].Artist),
-                        $('<th>').text(database[i].Title),
-                        $('<th>').text(database[i].Genre)
-                    )
-                );
-                count++;
-            }
-        }
+        $('#database').append(
+            $('<tr>').append(
+                $('<th>').text(database[i].Artist),
+                $('<th>').text(database[i].Title),
+                $('<th>').text(database[i].Genre)
+            )
+        );
     }
 
     $('#cd-count h1').remove();
-    $('#cd-count').append($('<h1>').text(count + ' / ' + database.length + ' CDs'));
+    $('#cd-count').append($('<h1>').text(database.length + ' CDs'));
 }
