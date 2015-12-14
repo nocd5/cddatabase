@@ -112,11 +112,15 @@ $(window).resize(function () {
 });
 
 function setPanelHeight() {
+    var panelMarginBottom = parseInt($('.panel').css('margin-bottom'), 0);
+    var panelBorderTopWidth = parseInt($('.panel').css('border-top-width'), 0);
+    var panelBorderBottomWidth = parseInt($('.panel').css('border-bottom-width'), 0);
     var headerPaddingTop = parseInt($('.panel-heading').css('padding-top'), 0);
-    var headerPaddingBottom = parseInt($('.panel-heading').css('padding-top'), 0);
-    var buttonMarginTop = parseInt($('.btn-group').css('margin-top'), 0);
-    var buttonMarginBottom = parseInt($('.btn-group').css('margin-top'), 0);
+    var headerPaddingBottom = parseInt($('.panel-heading').css('padding-bottom'), 0);
+    var buttonMarginTop = parseInt($('.btn-group').css('padding-top'), 0);
+    var buttonMarginBottom = parseInt($('.btn-group').css('padding-bottom'), 0);
     var height = $(window).height() - $('.panel-heading').height() - $('.btn-group').height()
+        - panelMarginBottom - (panelBorderTopWidth + panelBorderBottomWidth)
         - (headerPaddingTop + headerPaddingBottom)
         - (buttonMarginTop + buttonMarginBottom);
     $('.panel-height').css('height', height + 'px');

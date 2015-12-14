@@ -3,34 +3,26 @@
   font-weight: 400;
 }
 
+.btn-group {
+    padding: 5px 0;
+}
+
 .scrollable-menu {
     height: auto;
     max-height: 400px;
     overflow-x: hidden;
 }
 
+.dropdown-menu {
+    font-size:1.5em;
+    right: 0;
+    left: auto;
+}
+
 .panel-height {
     overflow-y: scroll;
 }
 
-.dropdown-items > div:nth-child(1) {
-    margin: 10px 0 5px 20px;
-}
-
-.dropdown-items
-{
-    text-align: left;
-    margin-left: auto;
-}
-
-.panel {
-    margin: 0px 20px;
-}
-
 table {
-    font-size:1.5em;
-}
-
-.dropdown-menu {
     font-size:1.5em;
 }
