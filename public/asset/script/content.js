@@ -11,7 +11,7 @@ xmlHttpRequestGenre.onreadystatechange = function () {
         }
     }
 }
-function postGenreJsonRequest(parameter = '') {
+function postGenreJsonRequest(parameter) {
     xmlHttpRequestGenre.open( 'GET', 'genre.json' + parameter, true );
     xmlHttpRequestGenre.send( null );
 }
@@ -26,7 +26,7 @@ xmlHttpRequestArtist.onreadystatechange = function () {
         }
     }
 }
-function postArtistJsonRequest(parameter = '') {
+function postArtistJsonRequest(parameter) {
     xmlHttpRequestArtist.open( 'GET', 'artist.json' + parameter, true );
     xmlHttpRequestArtist.send( null );
 }
@@ -41,7 +41,7 @@ xmlHttpRequestDatabase.onreadystatechange = function () {
         }
     }
 }
-function postDatabaseJsonRequest(parameter = '') {
+function postDatabaseJsonRequest(parameter) {
     xmlHttpRequestDatabase.open( 'GET', 'database.json' + parameter, true );
     xmlHttpRequestDatabase.send( null );
 }
@@ -62,9 +62,9 @@ function getQueryParameter() {
 }
 
 $(window).load(function () {
-    postGenreJsonRequest();
-    postArtistJsonRequest();
-    postDatabaseJsonRequest();
+    postGenreJsonRequest('');
+    postArtistJsonRequest('');
+    postDatabaseJsonRequest('');
 
     $('#genre').on('click', 'li', function () {
         if ($(this).index() == 0) {
