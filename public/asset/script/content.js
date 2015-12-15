@@ -115,13 +115,14 @@ function setPanelHeight() {
     var panelMarginBottom = parseInt($('.panel').css('margin-bottom'), 0);
     var panelBorderTopWidth = parseInt($('.panel').css('border-top-width'), 0);
     var panelBorderBottomWidth = parseInt($('.panel').css('border-bottom-width'), 0);
+    var headerHeight = parseInt($('.thead').css('height'), 0);
     var headerPaddingTop = parseInt($('.panel-heading').css('padding-top'), 0);
     var headerPaddingBottom = parseInt($('.panel-heading').css('padding-bottom'), 0);
     var buttonMarginTop = parseInt($('.btn-group').css('padding-top'), 0);
     var buttonMarginBottom = parseInt($('.btn-group').css('padding-bottom'), 0);
     var height = $(window).height() - $('.panel-heading').height() - $('.btn-group').height()
         - panelMarginBottom - (panelBorderTopWidth + panelBorderBottomWidth)
-        - (headerPaddingTop + headerPaddingBottom)
+        - (headerHeight + headerPaddingTop + headerPaddingBottom)
         - (buttonMarginTop + buttonMarginBottom);
     $('.panel-height').css('height', height + 'px');
 }
@@ -165,13 +166,14 @@ function generateArtistList(artist) {
 }
 
 function generateTable(database) {
-    $('#database tr').remove();
+    $('#database div').remove();
     for (var i = 0; i < database.length; i++) {
         $('#database').append(
-            $('<tr>').append(
-                $('<th>').text(database[i].Artist),
-                $('<th>').text(database[i].Title),
-                $('<th>').text(database[i].Genre)
+            $('<div>', {class: 'row trow'}).append(
+                $('<div>', {class: 'col-xs-1'}).append($('<img>', {src: './jacket?id=' + database[i].Id})),
+                $('<div>', {class: 'col-xs-3'}).text(database[i].Artist),
+                $('<div>', {class: 'col-xs-5'}).text(database[i].Title),
+                $('<div>', {class: 'col-xs-3'}).text(database[i].Genre)
             )
         );
     }

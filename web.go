@@ -1,13 +1,19 @@
 package main
 
 import (
+	"bytes"
 	"database/sql"
 	"encoding/json"
 	"github.com/coopernurse/gorp"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/nfnt/resize"
 	"github.com/zenazn/goji"
 	"github.com/zenazn/goji/web"
+	"image"
+	"image/jpeg"
+	"image/png"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -22,6 +28,7 @@ func main() {
 	goji.Get("/database.json", databaseJsonHandler)
 	goji.Get("/genre.json", genreJsonHandler)
 	goji.Get("/artist.json", artistJsonHandler)
+	goji.Get("/jacket", jacketImageHandler)
 	goji.Get("/*", http.FileServer(http.Dir("public")))
 	goji.Serve()
 }
@@ -42,6 +49,16 @@ func artistJsonHandler(ctx web.C, res http.ResponseWriter, req *http.Request) {
 	genre := req.URL.Query().Get("genre")
 	encoder := json.NewEncoder(res)
 	encoder.Encode(getArtist(genre))
+}
+
+func jacketImageHandler(ctx web.C, res http.ResponseWriter, req *http.Request) {
+	id := req.URL.Query().Get("id")
+	buffer := getImage(id)
+	res.Header().Set("Content-Type", "image/jpeg")
+	res.Header().Set("Content-Length", strconv.Itoa(len(buffer)))
+	if _, err := res.Write(buffer); err != nil {
+		panic(err.Error())
+	}
 }
 
 func escapeKeyword(keyword string) string {
@@ -94,6 +111,29 @@ func getArtist(genre string) []string {
 		artist = append(artist, item.Artist)
 	}
 	return artist
+}
+
+func getImage(id string) []byte {
+	dbmap := openDb()
+	defer dbmap.Db.Close()
+
+	var jacket [][]byte
+	_, _ = dbmap.Select(&jacket, "SELECT DISTINCT jacket FROM database WHERE _id == '"+id+"'")
+	r := bytes.NewReader(jacket[0])
+	var img image.Image
+	img, err := jpeg.Decode(r)
+	if err != nil {
+		img, err = png.Decode(r)
+		if err != nil {
+			return jacket[0]
+		}
+	}
+	resized := resize.Resize(50, 0, img, resize.Lanczos3)
+	buf := new(bytes.Buffer)
+	if err := jpeg.Encode(buf, resized, nil); err != nil {
+		panic(err.Error())
+	}
+	return buf.Bytes()
 }
 
 func openDb() *gorp.DbMap {
