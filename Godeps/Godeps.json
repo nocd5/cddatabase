@@ -1,5 +1,5 @@
 {
-	"ImportPath": "cddatabase",
+	"ImportPath": "github.com/nocd5/cddatabase",
 	"GoVersion": "go1.5",
 	"Deps": [
 		{
