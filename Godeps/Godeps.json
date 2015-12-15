@@ -13,6 +13,10 @@
 			"Rev": "5651a9d9d49ec25811d08220ee972080378d52ea"
 		},
 		{
+			"ImportPath": "github.com/nfnt/resize",
+			"Rev": "dc93e1b98c579d90ee2fa15c1fd6dac34f6e7899"
+		},
+		{
 			"ImportPath": "github.com/zenazn/goji",
 			"Comment": "v0.9.0-34-gbf843a1",
 			"Rev": "bf843a174a08e846246b8945f8a9a853d84a256a"
