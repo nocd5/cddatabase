@@ -173,7 +173,7 @@ function generateTable(database) {
                 $('<div>', {class: 'col-xs-1'}).append($('<img>', {src: './jacket?id=' + database[i].Id + '&width=50'})),
                 $('<div>', {class: 'col-xs-3'}).text(database[i].Artist),
                 $('<div>', {class: 'col-xs-5'}).text(database[i].Title),
-                $('<div>', {class: 'col-xs-3'}).text(database[i].Genre)
+                $('<div>', {class: 'col-xs-3'}).html(database[i].Genre.replace('/', '/<wbr>'))
             )
         );
     }
