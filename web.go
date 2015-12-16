@@ -53,7 +53,15 @@ func artistJsonHandler(ctx web.C, res http.ResponseWriter, req *http.Request) {
 
 func jacketImageHandler(ctx web.C, res http.ResponseWriter, req *http.Request) {
 	id := req.URL.Query().Get("id")
-	buffer := getImage(id)
+	width, err := strconv.ParseUint(req.URL.Query().Get("width"), 10, 0)
+	if err != nil {
+		width = 0
+	}
+	height, err := strconv.ParseUint(req.URL.Query().Get("height"), 10, 0)
+	if err != nil {
+		height = 0
+	}
+	buffer := getImage(id, uint(width), uint(height))
 	res.Header().Set("Content-Type", "image/jpeg")
 	res.Header().Set("Content-Length", strconv.Itoa(len(buffer)))
 	if _, err := res.Write(buffer); err != nil {
@@ -113,7 +121,7 @@ func getArtist(genre string) []string {
 	return artist
 }
 
-func getImage(id string) []byte {
+func getImage(id string, width, height uint) []byte {
 	dbmap := openDb()
 	defer dbmap.Db.Close()
 
@@ -128,7 +136,7 @@ func getImage(id string) []byte {
 			return jacket[0]
 		}
 	}
-	resized := resize.Resize(50, 0, img, resize.Lanczos3)
+	resized := resize.Resize(width, height, img, resize.Lanczos3)
 	buf := new(bytes.Buffer)
 	if err := jpeg.Encode(buf, resized, nil); err != nil {
 		panic(err.Error())

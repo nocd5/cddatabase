@@ -170,7 +170,7 @@ function generateTable(database) {
     for (var i = 0; i < database.length; i++) {
         $('#database').append(
             $('<div>', {class: 'row trow'}).append(
-                $('<div>', {class: 'col-xs-1'}).append($('<img>', {src: './jacket?id=' + database[i].Id})),
+                $('<div>', {class: 'col-xs-1'}).append($('<img>', {src: './jacket?id=' + database[i].Id + '&width=50'})),
                 $('<div>', {class: 'col-xs-3'}).text(database[i].Artist),
                 $('<div>', {class: 'col-xs-5'}).text(database[i].Title),
                 $('<div>', {class: 'col-xs-3'}).text(database[i].Genre)
