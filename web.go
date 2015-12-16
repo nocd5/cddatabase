@@ -134,7 +134,7 @@ func getImage(id string, width, height uint) []byte {
 	_, _ = dbmap.Select(&jacket, "SELECT DISTINCT jacket FROM database WHERE _id == '"+id+"'")
 	r := bytes.NewReader(jacket[0])
 	var img image.Image
-	img, format, err := image.Decode(r)
+	img, _, err := image.Decode(r)
 	if err != nil {
 		panic(err.Error())
 	}
