@@ -10,6 +10,7 @@ import (
 	"github.com/zenazn/goji"
 	"github.com/zenazn/goji/web"
 	"image"
+	"image/gif"
 	"image/jpeg"
 	"image/png"
 	"net/http"
@@ -25,6 +26,10 @@ type Item struct {
 }
 
 func main() {
+	image.RegisterFormat("jpeg", "jpeg", jpeg.Decode, jpeg.DecodeConfig)
+	image.RegisterFormat("png", "png", png.Decode, png.DecodeConfig)
+	image.RegisterFormat("gif", "gif", gif.Decode, gif.DecodeConfig)
+
 	goji.Get("/database.json", databaseJsonHandler)
 	goji.Get("/genre.json", genreJsonHandler)
 	goji.Get("/artist.json", artistJsonHandler)
@@ -129,12 +134,9 @@ func getImage(id string, width, height uint) []byte {
 	_, _ = dbmap.Select(&jacket, "SELECT DISTINCT jacket FROM database WHERE _id == '"+id+"'")
 	r := bytes.NewReader(jacket[0])
 	var img image.Image
-	img, err := jpeg.Decode(r)
+	img, format, err := image.Decode(r)
 	if err != nil {
-		img, err = png.Decode(r)
-		if err != nil {
-			return jacket[0]
-		}
+		panic(err.Error())
 	}
 	resized := resize.Resize(width, height, img, resize.Lanczos3)
 	buf := new(bytes.Buffer)
