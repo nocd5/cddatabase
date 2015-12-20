@@ -164,12 +164,16 @@ function generateTable(database) {
     for (var i = 0; i < database.length; i++) {
         $('#database').append(
             $('<div>', {class: 'row trow'}).append(
-                $('<div>', {class: 'col-xs-1'}).append($('<img>', {class: 'jacket-image', src: 'jacket?id=' + database[i].Id + '&width=50'})),
+                $('<div>', {class: 'col-xs-1'}).html("<img class=\"lazy jacket-image\" src=\"asset/image/dummy.png\" data-original=\"jacket?id=" + database[i].Id + "&width=50\">"),
                 $('<div>', {class: 'col-xs-3'}).text(database[i].Artist),
                 $('<div>', {class: 'col-xs-5'}).text(database[i].Title),
                 $('<div>', {class: 'col-xs-3'}).html(database[i].Genre.replace('/', '/<wbr>'))
             )
         );
+        $("img.lazy").lazyload({
+            effect: "fadeIn",
+            container: $(".tbody")
+        }).removeClass("lazy");
     }
 
     $('#cd-count h1').remove();
