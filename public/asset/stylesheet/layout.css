@@ -1,21 +1,31 @@
 * {
     font-family: 'Amaranth', 'Noto Sans Japanese', sans-serif;
-  font-weight: 400;
+    font-weight: 400;
 }
 
 .btn-group {
     padding: 5px 0;
 }
 
-
 .scrollable-menu {
     height: auto;
-    max-height: 400px;
+    max-height: 20em;
     overflow-x: hidden;
 }
 
+.btn-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 1.0em;
+}
+
+.btn-caret {
+    float: right;
+    margin-top:-1.35em;
+}
+
 .dropdown-menu {
-    font-size:1.5em;
+    font-size: 1.5em;
     right: 0;
     left: auto;
 }
@@ -25,12 +35,13 @@
 }
 
 .thead {
-    padding: 15px;
+    padding: 0px 15px;
 }
 
 .tbody {
     padding: 15px;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .trow {
@@ -38,7 +49,7 @@
     border-top: 1px solid #D7D7D7;
 }
 
-div.trow > div > img {
+.jacket-image {
     max-width: 50px;
     max-height: 50px;
 }

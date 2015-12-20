@@ -69,19 +69,15 @@ $(window).load(function () {
     $('#genre').on('click', 'li', function () {
         if ($(this).index() == 0) {
             currentGenre = '';
-            $('#dropdown-menu-genre').text('Genre');
+            $('#dropdown-menu-genre .btn-text').text('Genre');
         }
         else {
             currentGenre = $(this).text();
-            $('#dropdown-menu-genre').text(currentGenre);
+            $('#dropdown-menu-genre .btn-text').text(currentGenre);
         }
-        $('#dropdown-menu-genre').append(' ');
-        $('#dropdown-menu-genre').append($('<span>', {class: 'caret'}));
 
         currentArtist = '';
-        $('#dropdown-menu-artist').text('Artist');
-        $('#dropdown-menu-artist').append(' ');
-        $('#dropdown-menu-artist').append($('<span>', {class: 'caret'}));
+        $('#dropdown-menu-artist .btn-text').text('Artist');
 
         var parameter = '';
         if (currentGenre != '') {
@@ -93,14 +89,12 @@ $(window).load(function () {
     $('#artist').on('click', 'li', function () {
         if ($(this).index() == 0) {
             currentArtist = '';
-            $('#dropdown-menu-artist').text('Artist');
+            $('#dropdown-menu-artist .btn-text').text('Artist');
         }
         else {
             currentArtist = $(this).text();
-            $('#dropdown-menu-artist').text(currentArtist);
+            $('#dropdown-menu-artist .btn-text').text(currentArtist);
         }
-        $('#dropdown-menu-artist').append(' ');
-        $('#dropdown-menu-artist').append($('<span>', {class: 'caret'}));
         postDatabaseJsonRequest(getQueryParameter());
     })
 
@@ -115,7 +109,7 @@ function setPanelHeight() {
     var panelMarginBottom = parseInt($('.panel').css('margin-bottom'), 0);
     var panelBorderTopWidth = parseInt($('.panel').css('border-top-width'), 0);
     var panelBorderBottomWidth = parseInt($('.panel').css('border-bottom-width'), 0);
-    var headerHeight = parseInt($('.thead').css('height'), 0);
+    var headerHeight = parseInt($('.thead').css('height'), 0) + parseInt($('.header-text').css('height'), 0);
     var headerPaddingTop = parseInt($('.panel-heading').css('padding-top'), 0);
     var headerPaddingBottom = parseInt($('.panel-heading').css('padding-bottom'), 0);
     var buttonMarginTop = parseInt($('.btn-group').css('padding-top'), 0);
@@ -170,7 +164,7 @@ function generateTable(database) {
     for (var i = 0; i < database.length; i++) {
         $('#database').append(
             $('<div>', {class: 'row trow'}).append(
-                $('<div>', {class: 'col-xs-1'}).append($('<img>', {src: './jacket?id=' + database[i].Id + '&width=50'})),
+                $('<div>', {class: 'col-xs-1'}).append($('<img>', {class: 'jacket-image', src: 'jacket?id=' + database[i].Id + '&width=50'})),
                 $('<div>', {class: 'col-xs-3'}).text(database[i].Artist),
                 $('<div>', {class: 'col-xs-5'}).text(database[i].Title),
                 $('<div>', {class: 'col-xs-3'}).html(database[i].Genre.replace('/', '/<wbr>'))
